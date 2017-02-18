@@ -100,7 +100,9 @@ export default class ColorfulStackBar extends Component{
 
             if(outWidth && outHeight && widthDivideHeight!==this.state.widthDivideHeight){
                 this.setState({
-                    widthDivideHeight
+                    widthDivideHeight,
+                    outWidth,
+                    outHeight
                 });
             }
         }
@@ -115,7 +117,9 @@ export default class ColorfulStackBar extends Component{
 
             if(outWidth && outHeight && widthDivideHeight!==this.state.widthDivideHeight){
                 this.setState({
-                    widthDivideHeight
+                    widthDivideHeight,
+                    outWidth,
+                    outHeight
                 });
             }
         }
@@ -134,6 +138,8 @@ export default class ColorfulStackBar extends Component{
                     <CSBarContent {...this.getShowData()}
                         maxValue={this.state.maxValue}
                         widthDivideHeight={this.state.widthDivideHeight}
+                        outWidth={this.state.outWidth}
+                        outHeight={this.state.outHeight}
                         marginDivideWidth={marginDivideWidth}/>
                 </div>
 

@@ -18,7 +18,7 @@ const barHeight = 0.8; //柱图区域高度比
 /**
  * 计算相邻的两同类数据条的高度差
  * */
-const calcLength = (h1,h2,maxValue,widthDivideHeight) =>{
+const calcLength = (h1,h2,maxValue,widthDivideHeight,flag) =>{
     return (h2-h1)/maxValue*widthDivideHeight;
 }
 
@@ -80,14 +80,16 @@ class CSBar extends Component {
      * 根据最大值的高度来计算当前值的高度
      * */
     calcHeight = (value)=> {
-        return jtools.percentageNumber(value / this.props.maxValue * barHeight);
+        let temp = value / this.props.maxValue * barHeight;
+        return temp
+        //return jtools.percentageNumber(temp);
     }
 
 
 
     render() {
-        const {barWidth,isLast,barMarginRight,lines,data,colors,marginDivideWidth,widthDivideHeight,maxValue} = this.props;
-        let marginDivideWidthPercentage = jtools.percentageNumber(marginDivideWidth);
+        const {barWidth,isLast,barMarginRight,lines,data,colors,marginDivideWidth,widthDivideHeight,maxValue,outHeight,outWidth} = this.props;
+
 
         return (
             <div style={{width:barWidth,height:"100%",
@@ -96,20 +98,29 @@ class CSBar extends Component {
 
                     //todo...通过lines计算两根线的斜率和长度，做rotate变换
                     let angle1 = 0,angle2=0; //两个连线的斜率
+                    let lineLength1,lineLength2=jtools.percentageNumber(marginDivideWidth);//两根连线的长度
                     if(widthDivideHeight && lines.length>0){
-                        angle1=jtools.getAngle(marginDivideWidth,calcLength(lines[index][1],lines[index][0],maxValue,widthDivideHeight));
-                        angle2=jtools.getAngle(marginDivideWidth,calcLength(lines[index+1][1],lines[index+1][0],maxValue,widthDivideHeight));
-                        console.log("---------------",angle1);
+                        angle1=jtools.getAngle(marginDivideWidth,calcLength(lines[index][1],lines[index][0],maxValue,widthDivideHeight,"mini"));
+                        angle2=jtools.getAngle(marginDivideWidth,calcLength(lines[index+1][1],lines[index+1][0],maxValue,widthDivideHeight,"maximum"));
+                        lineLength1 = jtools.percentageNumber(marginDivideWidth/Math.cos(angle1.angle));
+                        lineLength2 = jtools.percentageNumber(marginDivideWidth/Math.cos(angle2.angle));
                     }
 
+                    let thisHeight = this.calcHeight(item);
+
+                    if(outHeight){
+                        thisHeight*=outHeight;
+                    }
+
+                    let marginDivideWidthPercentage = jtools.percentageNumber(marginDivideWidth);
                     //绘制柱状图的每一段，高度根据与最大高度的比例确定
                     return <div className={"CSBar_bar_part_"+index} key={"CSBar_bar_index"+index}
-                                style={{width:"100%",height:this.calcHeight(item),
+                                style={{width:"100%",height:thisHeight,
                                     position:"relative",
                                     backgroundColor:colors[index]}}>
                         {lines.length > 0 ?
                             <div style={{height:"2px",marginLeft:"100%",
-                                    width:marginDivideWidthPercentage+"",
+                                    width:lineLength1+"",
                                     backgroundColor:this.props.colors[index],
                                     position:"absolute",
                                     transformOrigin:"left",
@@ -118,7 +129,7 @@ class CSBar extends Component {
                             : ""}
                         {lines.length > 0 ?
                             <div style={{height:"2px",marginLeft:"100%",
-                                    width:marginDivideWidthPercentage+"",
+                                    width:lineLength2+"",
                                     backgroundColor:this.props.colors[index],
                                     transformOrigin:"left",
                                     transform:`rotate(${angle2.angleDeg}deg)`,
