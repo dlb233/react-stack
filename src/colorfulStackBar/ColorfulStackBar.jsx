@@ -20,6 +20,7 @@ import  CSBarSlider from './CSBarSlider.jsx'
 
 const marginDivideWidth = 1.5; //柱间间距与柱宽的比例
 const defaultLength = 9; //默认展示柱图数量
+const barHeightPercentage = 0.7; //柱状图最大高度占比
 
 /**
  * 彩色堆叠柱状图
@@ -90,19 +91,49 @@ export default class ColorfulStackBar extends Component{
         };
     }
 
-    render(){
+    componentDidMount(){
+        let outsideDiv = this.refs.outsideDiv;
+        if(outsideDiv){
+            let outWidth = outsideDiv.clientWidth,
+                outHeight = outsideDiv.clientHeight*barHeightPercentage,
+                widthDivideHeight =  outWidth/outHeight;
 
+            if(outWidth && outHeight && widthDivideHeight!==this.state.widthDivideHeight){
+                this.setState({
+                    widthDivideHeight
+                });
+            }
+        }
+    }
+
+    componentDidUpdate(){
+        let outsideDiv = this.refs.outsideDiv;
+        if(outsideDiv){
+            let outWidth = outsideDiv.clientWidth,
+                outHeight = outsideDiv.clientHeight*barHeightPercentage,
+                widthDivideHeight =  outWidth/outHeight;
+
+            if(outWidth && outHeight && widthDivideHeight!==this.state.widthDivideHeight){
+                this.setState({
+                    widthDivideHeight
+                });
+            }
+        }
+    }
+
+    render(){
         return(
-            <div style={{height:"100%"}}>
+            <div style={{height:"100%"}} ref="outsideDiv">
                 {this.props.tabRequire?
                     <div className="CSBar_tab" style={{height:"15%"}}>
                         <CSBarTab />
                     </div>:""
                 }
 
-                <div className="CSBar_content" style={{height:"70%"}}>
+                <div className="CSBar_content" style={{height:jtools.percentageNumber(barHeightPercentage)}}>
                     <CSBarContent {...this.getShowData()}
                         maxValue={this.state.maxValue}
+                        widthDivideHeight={this.state.widthDivideHeight}
                         marginDivideWidth={marginDivideWidth}/>
                 </div>
 
