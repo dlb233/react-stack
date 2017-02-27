@@ -1,3 +1,15 @@
-.CSBar_bars div{
-  display: inline-block;
+.CSBar_bars{
+  &>div{
+    display: inline-block;
+    position: relative;
+  }
 }
+
+//.CSBar_bar_part_0{
+//  &:hover{
+//    cursor: pointer;
+//    &>div{
+//      visibility: visible;
+//    }
+//  }
+//}

@@ -15,7 +15,7 @@ import React, {Component} from 'react'
 import ColorfulStackBar from './colorfulStackBar/ColorfulStackBar.jsx'
 
 const fakeData = {
-    data:[
+    data:[//34098，45393
         [17256,7326,4659,3056,1801],
         [16666,8026,5112,5262,2351],
         [15236,8888,6113,5265,2562],

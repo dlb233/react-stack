@@ -39,21 +39,26 @@ export default class CSBarContent extends Component {
                     {data.map((item, index)=> {
 
                         let lines = [];
+                        let totalValue=0;
                         let itemNext = data[index+1];//下一根柱状图数据
 
                         //自己和下一根柱状图各相同节的数据总量
                         if (itemNext) {
-                            let sumItem = item.reduce((pre, cur)=>pre + cur);
+                            let sumItem = totalValue =  item.reduce((pre, cur)=>pre + cur);
                             let sumNext = data[index + 1].reduce((pre, cur)=>pre + cur);
                             lines.push([sumItem, sumNext]);
                             for (let i = 0; i < item.length; i++) {
                                 lines.push([sumItem -= item[i], sumNext -= itemNext[i]]);
                             }
+                        }else{
+                            totalValue = item.reduce((pre, cur)=>pre + cur);
                         }
 
                         return <CSBar {...other}
                             key={"CSBar_index"+index}
-                            data={item} index={index}
+                            data={item}
+                            index={index}
+                            totalValue={totalValue}
                             isLast={index===data.length-1}
                             lines={lines}
                             marginDivideWidth={this.props.marginDivideWidth}
@@ -85,14 +90,25 @@ class CSBar extends Component {
         //return jtools.percentageNumber(temp);
     }
 
+    componentDidMount(){
+        for(let i in this.props.data){
+            let className = `.CSBar_bar_part_${i}`;
+            $(className).hover(()=>{
+                $(`${className} div`).css("visibility","visible");
+            },()=>{
+                $(`${className} div`).css("visibility","hidden");
+            })
+        }
+
+    }
 
 
     render() {
-        const {barWidth,isLast,barMarginRight,lines,data,colors,marginDivideWidth,widthDivideHeight,maxValue,outHeight,outWidth} = this.props;
+        const {barWidth,isLast,barMarginRight,lines,data,colors,marginDivideWidth,widthDivideHeight,maxValue,outHeight,outWidth,totalValue} = this.props;
 
-
+        let offsetTop = (1-totalValue/maxValue)*outHeight*barHeight;
         return (
-            <div style={{width:barWidth,height:"100%",
+            <div style={{width:barWidth,height:"100%",top:`${offsetTop}px`,
             marginRight:isLast?"":barMarginRight}}>
                 {data.map((item, index)=> {
 
@@ -106,7 +122,8 @@ class CSBar extends Component {
                         lineLength2 = jtools.percentageNumber(marginDivideWidth/Math.cos(angle2.angle));
                     }
 
-                    let thisHeight = this.calcHeight(item);
+                    let thisHeight = this.calcHeight(item),
+                        offsetTop = 0;
 
                     if(outHeight){
                         thisHeight*=outHeight;
@@ -123,6 +140,7 @@ class CSBar extends Component {
                                     width:lineLength1+"",
                                     backgroundColor:this.props.colors[index],
                                     position:"absolute",
+                                    visibility:"hidden",
                                     transformOrigin:"left",
                                     transform:`rotate(${angle1.angleDeg}deg)`,
                                     top:0}}></div>
@@ -132,6 +150,7 @@ class CSBar extends Component {
                                     width:lineLength2+"",
                                     backgroundColor:this.props.colors[index],
                                     transformOrigin:"left",
+                                    visibility:"hidden",
                                     transform:`rotate(${angle2.angleDeg}deg)`,
                                     position:"absolute",
                                     bottom:0}}></div>
