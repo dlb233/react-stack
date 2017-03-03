@@ -1,9 +1,22 @@
+dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, input, legend, li, p, pre, select, span, textarea, ul{
+  padding:0;
+  margin:0;
+  list-style: none;
+  vertical-align: top;
+  outline: 0;
+}
+
 .CSBar_bars{
   &>div{
     display: inline-block;
     position: relative;
   }
 }
+
+.csBar_single_bar_hide{
+  visibility: hidden;
+}
+
 
 //.CSBar_bar_part_0{
 //  &:hover{

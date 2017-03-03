@@ -1,13 +1,11 @@
 /**
- * Created by LuoJia on 2017/2/16.
+ * Created by dlb233 on 2017/2/16.
  *
- * Copyright (c) 2017-present Dulingbo,SefonSoft Company, Inc.
- * All rights reserved.
+ * Copyright (c) 2017-present dlb233 Inc.
  *
- * Author information:
- * Email:dulingbo@sefonSoft.com
- * Company:Sefon Soft.ChengDu
- * file information(文件功能):
+ * Author infomation:
+ * Email:420615326@qq.com
+ * file infomation(文件功能):
  */
 //main.js
 import React from 'react';

@@ -1,16 +1,15 @@
 /**
- * Created by Dulingbo on 2017/1/5.
+ * Created by dlb233 on 2017/1/5.
  *
- * Copyright (c) 2017-present Dulingbo,SefonSoft Company, Inc.
- * All rights reserved.
+ * Copyright (c) 2017-present dlb233 Inc.
  *
  * Author infomation:
- * Email:dulingbo@sefonSoft.com
- * Company:Sefon Soft.ChengDu
+ * Email:420615326@qq.com
  * file infomation(文件功能): 堆叠柱状图下部滑动条
  */
 
 import React, { Component, PropTypes } from 'react'
+import { Range } from 'rc-slider';
 
 export default class CSBarSlider extends Component{
 
@@ -23,8 +22,8 @@ export default class CSBarSlider extends Component{
 
     render(){
         return(
-            <div>
-
+            <div style={{}}>
+                <Range />
             </div>
         )
     }
